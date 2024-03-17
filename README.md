@@ -1,111 +1,157 @@
-# Kintinuous #
-
-Real-time dense visual SLAM system capable of producing high quality globally consistent point and mesh reconstructions over hundreds of metres in real-time with only a low-cost commodity RGB-D sensor.
-
-# Related Publications #
-Please cite the most appropriate of these works (in order of our preference) if you make use of our system in any of your own endeavors:
-
-* **[Real-time Large Scale Dense RGB-D SLAM with Volumetric Fusion](http://thomaswhelan.ie/Whelan14ijrr.pdf)**, *T. Whelan, M. Kaess, H. Johannsson, M.F. Fallon, J. J. Leonard and J.B. McDonald*, IJRR '14
-* **[Deformation-based Loop Closure for Large Scale Dense RGB-D SLAM](http://thomaswhelan.ie/Whelan13iros.pdf)**, *T. Whelan, M. Kaess, J.J. Leonard, and J.B. McDonald*, IROS '13
-* **[Robust Real-Time Visual Odometry for Dense RGB-D Mapping](http://thomaswhelan.ie/Whelan13icra.pdf)**, *T. Whelan, H. Johannsson, M. Kaess, J.J. Leonard, and J.B. McDonald*, ICRA '13
-* **[Kintinuous: Spatially Extended KinectFusion](http://thomaswhelan.ie/Whelan12rssw.pdf)**, *T. Whelan, M. Kaess, M.F. Fallon, H. Johannsson, J. J. Leonard and J.B. McDonald*, RSS RGB-D Workshop '12
-* **[A method and system for mapping an environment](https://www.google.com/patents/US9412173)**, *T. Whelan, M. Kaess, J.J. Leonard and J.B. McDonald*, US 9412173 B2
-
-# 1. What do I need to build it? #
-* Ubuntu 14.04, 15.04 or 16.04 (Though many other linux distros will work fine)
-* CMake
-* OpenGL
-* [CUDA >= 7.0](https://developer.nvidia.com/cuda-downloads)
-* [OpenNI2](https://github.com/occipital/OpenNI2)
-* SuiteSparse
-* Eigen
-* Boost
-* zlib
-* libjpeg
-* [OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip)
-* [DLib](https://github.com/dorian3d/DLib) @ 330bdc10576f6bcb55e0bd85cd5296f39ba8811a
-* [DBoW2](https://github.com/dorian3d/DBoW2) @ 4a6eed2b3ae35ed6837c8ba226b55b30faaf419d
-* [DLoopDetector](https://github.com/dorian3d/DLoopDetector) @ 84bfc56320371bed97cab8aad3aa9561ca931d3f
-* [iSAM](http://people.csail.mit.edu/kaess/isam/)
-* [PCL](http://pointclouds.org/)
-* [Pangolin](https://github.com/stevenlovegrove/Pangolin)
-
-Firstly, add [nVidia's official CUDA repository](https://developer.nvidia.com/cuda-downloads) to your apt sources, then run the following command to pull in most dependencies from the official repos:
-
-```bash
-sudo apt-get install -y cmake-qt-gui git build-essential libusb-1.0-0-dev libudev-dev openjdk-7-jdk freeglut3-dev python-vtk libvtk-java libglew-dev cuda-7-5 libsuitesparse-dev openexr
-```
-
-This is where things get really bad. Due to libraries constantly changing their APIs and includes, creating build processes that actually last for more than a few months between a couple of Ubuntu versions is extremely difficult. Below are separate instructions for Ubuntu 14.04,  15.04 and 16.04.
-
-**14.04**
-
-Install PCL 1.7 from this PPA:
-
-```bash
-sudo add-apt-repository -y ppa:v-launchpad-jochen-sprickerhof-de/pcl
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">连续的</font></font></h1><a id="user-content-kintinuous" class="anchor" aria-label="永久链接： 连续不断" href="#kintinuous"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">实时密集视觉 SLAM 系统能够仅使用低成本的商用 RGB-D 传感器即可实时生成数百米范围内的高质量全局一致的点和网格重建。</font></font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">相关出版物</font></font></h1><a id="user-content-related-publications" class="anchor" aria-label="永久链接：相关出版物" href="#related-publications"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您在自己的任何活动中使用我们的系统，请引用这些作品中最合适的作品（按照我们的偏好顺序）：</font></font></p>
+<ul dir="auto">
+<li><strong><a href="http://thomaswhelan.ie/Whelan14ijrr.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">具有体积融合的实时大规模密集 RGB-D SLAM</font></font></a></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> T. Whelan、M. Kaess、H. Johannsson、MF Fallon、JJ Leonard 和 JB McDonald</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，IJRR '14</font></font></li>
+<li><strong><a href="http://thomaswhelan.ie/Whelan13iros.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于大规模密集 RGB-D SLAM 的基于变形的环路闭合</font></font></a></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> T. Whelan、M. Kaess、JJ Leonard 和 JB McDonald</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，IROS '13</font></font></li>
+<li><strong><a href="http://thomaswhelan.ie/Whelan13icra.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于密集 RGB-D 映射的鲁棒实时视觉里程计</font></font></a></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> T. Whelan、H. Johannsson、M. Kaess、JJ Leonard 和 JB McDonald</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，ICRA '13</font></font></li>
+<li><strong><a href="http://thomaswhelan.ie/Whelan12rssw.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kintinious：空间扩展 KinectFusion</font></font></a></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> T. Whelan、M. Kaess、MF Fallon、H. Johannsson、JJ Leonard 和 JB McDonald</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、RSS RGB-D Workshop '12</font></font></li>
+<li><strong><a href="https://www.google.com/patents/US9412173" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于绘制环境图的方法和系统</font></font></a></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> T. Whelan、M. Kaess、JJ Leonard 和 JB McDonald</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，US 9412173 B2</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1. 构建它需要什么？</font></font></h1><a id="user-content-1-what-do-i-need-to-build-it" class="anchor" aria-label="永久链接： 1. 我需要什么来构建它？" href="#1-what-do-i-need-to-build-it"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ubuntu 14.04、15.04 或 16.04（尽管许多其他 Linux 发行版也可以正常工作）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CMake</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenGL</font></font></li>
+<li><a href="https://developer.nvidia.com/cuda-downloads" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CUDA &gt;= 7.0</font></font></a></li>
+<li><a href="https://github.com/occipital/OpenNI2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenNI2</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">稀疏套件</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本征</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">促进</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">兹库</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">库文件</font></font></li>
+<li><a href="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开放式计算机视觉</font></font></a></li>
+<li><a href="https://github.com/dorian3d/DLib"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLib</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @330bdc10576f6bcb55e0bd85cd5296f39ba8811a</font></font></li>
+<li><a href="https://github.com/dorian3d/DBoW2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DBoW2</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @ 4a6eed2b3ae35ed6837c8ba226b55b30faaf419d</font></font></li>
+<li><a href="https://github.com/dorian3d/DLoopDetector"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLoopDetector</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> @84bfc56320371bed97cab8aad3aa9561ca931d3f</font></font></li>
+<li><a href="http://people.csail.mit.edu/kaess/isam/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是</font></font></a></li>
+<li><a href="http://pointclouds.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">聚己内酯</font></font></a></li>
+<li><a href="https://github.com/stevenlovegrove/Pangolin"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">穿山甲</font></font></a></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">首先，将</font></font><a href="https://developer.nvidia.com/cuda-downloads" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">nVidia 的官方 CUDA 存储库</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">添加到您的 apt 源中，然后运行以下命令从官方存储库中提取大多数依赖项：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>sudo apt-get install -y cmake-qt-gui git build-essential libusb-1.0-0-dev libudev-dev openjdk-7-jdk freeglut3-dev python-vtk libvtk-java libglew-dev cuda-7-5 libsuitesparse-dev openexr</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="sudo apt-get install -y cmake-qt-gui git build-essential libusb-1.0-0-dev libudev-dev openjdk-7-jdk freeglut3-dev python-vtk libvtk-java libglew-dev cuda-7-5 libsuitesparse-dev openexr" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这就是事情变得非常糟糕的地方。</font><font style="vertical-align: inherit;">由于库不断更改其 API 和包含内容，因此在几个 Ubuntu 版本之间创建实际上持续几个月以上的构建过程非常困难。</font><font style="vertical-align: inherit;">以下是针对 Ubuntu 14.04、15.04 和 16.04 的单独说明。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">14.04</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从此 PPA 安装 PCL 1.7：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>sudo add-apt-repository -y ppa:v-launchpad-jochen-sprickerhof-de/pcl
 sudo apt-get update
-sudo apt-get install -y libpcl-all
-```
-
-Then install [OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip), [DLib](https://github.com/dorian3d/DLib), [DBoW2](https://github.com/dorian3d/DBoW2), [DLoopDetector](https://github.com/dorian3d/DLoopDetector), [iSAM](http://people.csail.mit.edu/kaess/isam/) and [Pangolin](https://github.com/stevenlovegrove/Pangolin) from source, in this order.
-
-Why do you have to install OpenCV from source? Because the version in the Ubuntu repos doesn't have the nonfree module, required for SURF descriptors used in the DBoW2. Also, it is strongly recommended you build OpenCV with the following options (in particular, building it with Qt5 might introduce a lot of pain):
-
-```bash
-cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF ..
-```
-
-If you have trouble building Pangolin, disable ffmpeg support using the following CMake command:
-
-```bash
-cmake .. -DAVFORMAT_INCLUDE_DIR=""
-```
-
-Once finished you'll have everything you need to build Kintinuous.
-
-**15.04**
-
-On 15.04 PCL is in the official repos:
-
-```bash
-sudo apt-get install -y libpcl-dev yasm libvtk5-qt4-dev
-```
-
-The version of PCL in the 15.04 repos does not contain OpenNI2. You should build the Occipital maintained version, available [here](https://github.com/occipital/OpenNI2).
-
-As usual, ffmpeg screws things up for everyone in 15.04. You need to build ffmpeg yourself otherwise OpenCV will fail to build. Why do you have to install OpenCV from source? Because the version in the Ubuntu repos doesn't have the nonfree module, required for SURF descriptors used in the DBoW2. Why can't you use OpenCV3? Because DBoW will fail to build. Why can't you disable ffmpeg in OpenCV's build? Because DBoW will fail if the video module isn't built. Build and install ffmpeg as follows:
-
-```bash
-git clone git://source.ffmpeg.org/ffmpeg.git
+sudo apt-get install -y libpcl-all</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="sudo add-apt-repository -y ppa:v-launchpad-jochen-sprickerhof-de/pcl
+sudo apt-get update
+sudo apt-get install -y libpcl-all" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">然后按顺序从源代码</font><font style="vertical-align: inherit;">安装</font></font><a href="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenCV</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/dorian3d/DLib"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLib</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/dorian3d/DBoW2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DBoW2</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/dorian3d/DLoopDetector"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLoopDetector</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="http://people.csail.mit.edu/kaess/isam/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">iSAM</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和</font></font><a href="https://github.com/stevenlovegrove/Pangolin"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Pangolin 。</font></font></a><font style="vertical-align: inherit;"></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为什么必须从源代码安装 OpenCV？</font><font style="vertical-align: inherit;">因为 Ubuntu 存储库中的版本没有 DBoW2 中使用的 SURF 描述符所需的非自由模块。</font><font style="vertical-align: inherit;">另外，强烈建议您使用以下选项构建 OpenCV（特别是使用 Qt5 构建它可能会带来很多痛苦）：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF ..</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF .." tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您在构建 Pangolin 时遇到问题，请使用以下 CMake 命令禁用 ffmpeg 支持：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>cmake .. -DAVFORMAT_INCLUDE_DIR=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cmake .. -DAVFORMAT_INCLUDE_DIR=&quot;&quot;" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">完成后，您将拥有构建 Kintinously 所需的一切。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15.04</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15.04 PCL 位于官方仓库中：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>sudo apt-get install -y libpcl-dev yasm libvtk5-qt4-dev</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="sudo apt-get install -y libpcl-dev yasm libvtk5-qt4-dev" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15.04 存储库中的 PCL 版本不包含 OpenNI2。</font><font style="vertical-align: inherit;">您应该构建 Occipital 维护版本，可</font></font><a href="https://github.com/occipital/OpenNI2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">获取。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和往常一样，ffmpeg 在 15.04 中把事情搞砸了。</font><font style="vertical-align: inherit;">您需要自己构建 ffmpeg，否则 OpenCV 将无法构建。</font><font style="vertical-align: inherit;">为什么必须从源代码安装 OpenCV？</font><font style="vertical-align: inherit;">因为 Ubuntu 存储库中的版本没有 DBoW2 中使用的 SURF 描述符所需的非自由模块。</font><font style="vertical-align: inherit;">为什么不能使用OpenCV3？</font><font style="vertical-align: inherit;">因为 DBoW 将无法构建。</font><font style="vertical-align: inherit;">为什么不能在 OpenCV 的构建中禁用 ffmpeg？</font><font style="vertical-align: inherit;">因为如果没有构建视频模块，DBoW将会失败。</font><font style="vertical-align: inherit;">构建并安装 ffmpeg，如下所示：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>git clone git://source.ffmpeg.org/ffmpeg.git
+<span class="pl-c1">cd</span> ffmpeg/
+git reset --hard cee7acfcfc1bc806044ff35ff7ec7b64528f99b1
+./configure --enable-shared
+make -j8
+sudo make install
+sudo ldconfig</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="git clone git://source.ffmpeg.org/ffmpeg.git
 cd ffmpeg/
 git reset --hard cee7acfcfc1bc806044ff35ff7ec7b64528f99b1
 ./configure --enable-shared
 make -j8
 sudo make install
-sudo ldconfig
-```
-
-Then build [OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip) with the following options:
-
-```bash
-cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF ..
-```
-
-Finally, build [DLib](https://github.com/dorian3d/DLib), [DBoW2](https://github.com/dorian3d/DBoW2), [DLoopDetector](https://github.com/dorian3d/DLoopDetector), [iSAM](http://people.csail.mit.edu/kaess/isam/) and [Pangolin](https://github.com/stevenlovegrove/Pangolin) from source, in this order.  If you have trouble building Pangolin, disable ffmpeg support using the following CMake command:
-
-```bash
-cmake .. -DAVFORMAT_INCLUDE_DIR=""
-```
-
-Afterwards, you will be able to build Kintinuous.
-
-**16.04**
-
-The instructions for 15.04 will work fine except you can't use the apt version of PCL because [someone screwed up vtk](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=819608). So ensure you purge/remove it completely if you have it installed from apt, then build it manually;
-
-```bash
-sudo apt-get install g++ cmake cmake-gui doxygen mpi-default-dev openmpi-bin openmpi-common libflann-dev libeigen3-dev libboost-all-dev libvtk5-qt4-dev libvtk6.2 libvtk5-dev libqhull* libusb-dev libgtest-dev git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libusb-1.0-0-dev graphviz mono-complete qt-sdk openjdk-7-jdk openjdk-7-jre
+sudo ldconfig" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">然后使用以下选项</font><font style="vertical-align: inherit;">构建</font></font><a href="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.9/opencv-2.4.9.zip" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenCV ：</font></font></a><font style="vertical-align: inherit;"></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF ..</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cmake -D BUILD_NEW_PYTHON_SUPPORT=OFF -D WITH_OPENCL=OFF -D WITH_OPENMP=ON -D INSTALL_C_EXAMPLES=OFF -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=OFF -D WITH_OPENGL=OFF -D WITH_VTK=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_TESTS=OFF -D WITH_CUDA=OFF -D BUILD_opencv_gpu=OFF .." tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">最后，</font><font style="vertical-align: inherit;">按顺序从源代码构建</font></font><a href="https://github.com/dorian3d/DLib"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLib</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/dorian3d/DBoW2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DBoW2</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/dorian3d/DLoopDetector"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">DLoopDetector</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="http://people.csail.mit.edu/kaess/isam/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">iSAM</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和</font></font><a href="https://github.com/stevenlovegrove/Pangolin"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Pangolin 。</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您在构建 Pangolin 时遇到问题，请使用以下 CMake 命令禁用 ffmpeg 支持：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>cmake .. -DAVFORMAT_INCLUDE_DIR=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cmake .. -DAVFORMAT_INCLUDE_DIR=&quot;&quot;" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">之后，您将能够构建 Kintinous。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">16.04</font></font></strong></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15.04 的说明将正常工作，除非您无法使用 PCL 的 apt 版本，因为</font></font><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=819608" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有人搞砸了 vtk</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">因此，如果您从 apt 安装了它，请确保完全清除/删除它，然后手动构建它；</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>sudo apt-get install g++ cmake cmake-gui doxygen mpi-default-dev openmpi-bin openmpi-common libflann-dev libeigen3-dev libboost-all-dev libvtk5-qt4-dev libvtk6.2 libvtk5-dev libqhull<span class="pl-k">*</span> libusb-dev libgtest-dev git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libusb-1.0-0-dev graphviz mono-complete qt-sdk openjdk-7-jdk openjdk-7-jre
+git clone https://github.com/PointCloudLibrary/pcl.git
+<span class="pl-c1">cd</span> pcl
+mkdir build
+<span class="pl-c1">cd</span> build
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GPU=OFF -DBUILD_apps=OFF -DBUILD_examples=OFF ..
+make -j8
+sudo make install
+sudo ldconfig</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="sudo apt-get install g++ cmake cmake-gui doxygen mpi-default-dev openmpi-bin openmpi-common libflann-dev libeigen3-dev libboost-all-dev libvtk5-qt4-dev libvtk6.2 libvtk5-dev libqhull* libusb-dev libgtest-dev git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libusb-1.0-0-dev graphviz mono-complete qt-sdk openjdk-7-jdk openjdk-7-jre
 git clone https://github.com/PointCloudLibrary/pcl.git
 cd pcl
 mkdir build
@@ -113,94 +159,90 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_GPU=OFF -DBUILD_apps=OFF -DBUILD_examples=OFF ..
 make -j8
 sudo make install
-sudo ldconfig
-```
-
-Afterwards, Kintinuous should link without any problems.
-
-# 2. Is there an easier way to build it? #
-Understandably, building all of the dependencies seems quite complicated. If you run the *build.sh* script on a fresh clean install of Ubuntu 14.04 or 15.04, enter your password for sudo a few times and wait a few minutes all dependencies will get downloaded and installed and it should build everything correctly. This has not been tested on anything but fresh installs, so I would advise using it with caution if you already have some of the dependencies installed.
-
-# 3. How do I use it? #
-There are four build targets:
-
-* *libutil.a* is a small set of utility classes.
-* *libfrontend.a* is the main tracking and fusion component.
-* *libbackend.a* contains the triangulation, loop closure and deformation components.
-* *Kintinuous* is an executable GUI used to run the system.
-
-The GUI (*Kintinuous*) can take a bunch of parameters when launching it from the command line. They are as follows:
-
-* *-c <calibration>* : Loads a camera calibration file specified by either:
- - A depth_intrinsics matrix in OpenCV format (ending .yml, .xml), or
- - A text file containing [fx fy cx cy] or [fx fy cx cy w h]
-* *-l <logfile>* : Processes the specified .klg log file.
-* *-v <vocab>* : Loads DBoW vocabulary file.
-* *-p <poses>* : Loads ground truth poses to use instead of estimated pose.
-* *-gpu <gpu>* : Sets which GPU should be used by CUDA.
-* *-n <number>* : Number of frames to process.
-* *-t <threshold>* : Voxel threshold for volume shifting (default *14*).
-* *-cw <weight>* : Removes voxels below this threshold when extracting slices (default *8*).
-* *-lt <throttle>* : Disallow loop closures within this time period of the last (default *30*s).
-* *-s <size>* : Size of the fusion volume (default *6*m).
-* *-dg <sampling>* : Rate of pose sampling for deformation (default *0.8*m).
-* *-il <inliers>* : Inlier threshold for RANSAC (default *0.35*).
-* *-it <isam>* : Residual threshold for pose graph optimisation (default *10*).
-* *-sm* : Static mode (disable volume shifting).
-* *-f* : Flip RGB/BGR.
-* *-od* : Perform online deformation (required for loop closure).
-* *-m* : Enable mesh generation.
-* *-no* : Disable overlap of extracted slices.
-* *-nos* : Remove overlap when saving map.
-* *-r* : Use RGB tracking only.
-* *-ri* : Use combined ICP+RGB tracking.
-* *-d* : Enable dynamic cube positioning.
-* *-dc* : Disable color weighting by angle.
-* *-fl* : Subsample pose graph for faster loop closure.
-* *-fod* : Enable fast odometry.
-
-Essentially by default *./Kintinuous* will try run off an attached ASUS sensor live. You can provide a .klg log file instead with the -l parameter. You can capture .klg format logs using either [Logger1](https://github.com/mp3guy/Logger1) or [Logger2](https://github.com/mp3guy/Logger2).
-
-# 4. Datasets #
-
-We have provided a sample dataset which you can run easily with Kintinuous for download [here](http://www.cs.nuim.ie/research/vision/data/loop.klg). Launch it as follows:
-
-```bash
-./Kintinuous -s 7 -v ../vocab.yml.gz -l loop.klg -ri -fl -od
-```
-
-# 5. License and Copyright #
-The use of the code within this repository and all code within files that make up the software that is Kintinuous is permitted for non-commercial purposes only.  The full terms and conditions that apply to the code within this repository are detailed within the LICENSE.txt file and at [http://www.cs.nuim.ie/research/vision/data/kintinuous/code.php](http://www.cs.nuim.ie/research/vision/data/kintinuous/code.php) unless explicitly stated.  By accessing this repository you agree to comply with these terms.
-
-If you wish to use any of this code for commercial purposes then please email commercialisation@nuim.ie.
-
-Copyright (C) 2015 The National University of Ireland Maynooth and Massachusetts Institute of Technology.
-
-# 6. FAQ #
-***What are the hardware requirements?***
-
-A [fast nVidia GPU (1TFLOPS+)](https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units#GeForce_500_Series), and a fast CPU (something like an i5). If you want to use a non-nVidia GPU you're out of luck.
-
-***The frontend is running fast but the map seems to be lagging behind***
-
-This is because you have a slow CPU. The backend runs completely on the CPU and must process every point extracted from the frontend. This means if your map is very large, or if you're moving very fast, the backend may not be able to keep up. Additionally, turning on meshing when loop closure is enabled is very CPU intensive, but a fast modern processor will cope with this in real-time.
-
-***I saved a map, how can I view it?***
-
-Download [Meshlab](http://meshlab.sourceforge.net/), which can read .ply files. If you only saved the point cloud you'll need to use PCL's viewer for .pcd files.
-
-***The map keeps getting corrupted - tracking is failing - loop closures are incorrect/not working***
-
-Firstly, if you're running live and not processing a log file, ensure you're hitting 30Hz, this is important. Secondly, you cannot move the sensor extremely fast because this violates the assumption behind projective data association. In addition to this, you're probably using a primesense, which means you're suffering from motion blur, unsynchronised cameras and rolling shutter. All of these are aggravated by fast motion and hinder tracking performance.
-
-If you're not getting loop closures and expecting some, or getting false ones, you're at the mercy of DBoW. You can tweak some of the parameters related to it, but over all you're limited by the typical limitations of appearance-based place recognition. Feel free to splice in a different place recognition method. As an aside, [ElasticFusion](https://github.com/mp3guy/ElasticFusion) is much better for very loopy comprehensive scanning, which may suit your application better.
-
-If you notice some weird slicing effect during loop closures, either turn down the volume size or increase the rate at which poses are sampled in the deformation by decreasing the *-dg* parameter.
-
-***Is there a ROS bridge/node?***
-
-No. In fact, if you have ROS installed you're likely to run into some truly horrible build issues.
-
-***This doesn't seem to work like it did in the videos/papers***
-
-A substantial amount of refactoring was carried out in order to open source this system, including rewriting a lot of functionality to avoid certain licenses. Although great care was taken during this process, it is possible that performance regressions were introduced and have not yet been discovered.
+sudo ldconfig" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">之后，Kintinious 应该可以毫无问题地链接。</font></font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2. 有没有更简单的方法来构建它？</font></font></h1><a id="user-content-2-is-there-an-easier-way-to-build-it" class="anchor" aria-label="永久链接： 2. 有没有更简单的方法来构建它？" href="#2-is-there-an-easier-way-to-build-it"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以理解的是，构建所有依赖项似乎相当复杂。</font><font style="vertical-align: inherit;">如果您在全新安装的 Ubuntu 14.04 或 15.04 上运行</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">build.sh</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">脚本，请输入 sudo 密码几次，然后等待几分钟，所有依赖项都会下载并安装，并且应该正确构建所有内容。</font><font style="vertical-align: inherit;">除了全新安装之外，这还没有经过任何测试，因此如果您已经安装了一些依赖项，我建议您谨慎使用它。</font></font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3.我该如何使用它？</font></font></h1><a id="user-content-3-how-do-i-use-it" class="anchor" aria-label="永久链接： 3. 如何使用它？" href="#3-how-do-i-use-it"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有四个构建目标：</font></font></p>
+<ul dir="auto">
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">libutil.a</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是一小组实用程序类。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">libfrontend.a</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是主要的跟踪和融合组件。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">libbackend.a</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">包含三角剖分、闭环和变形组件。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kintinous</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是一个用于运行系统的可执行 GUI。</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从命令行启动时，</font><font style="vertical-align: inherit;">GUI ( </font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kintinously ) 可以采用一堆参数。</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">它们如下：</font></font></p>
+<ul dir="auto">
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-c</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：加载由以下任一指定的相机校准文件：</font></font></li>
+</ul>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenCV 格式的 height_intrinsics 矩阵（以 .yml、.xml 结尾），或</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">包含 [fx fy cx cy] 或 [fx fy cx cy wh] 的文本文件</font></font></li>
+</ul>
+<ul dir="auto">
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-l</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：处理指定的 .klg 日志文件。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-v</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：加载 DBoW 词汇文件。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-p</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：加载地面真实姿势以代替估计姿势。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-gpu</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：设置 CUDA 应使用哪个 GPU。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-n</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：要处理的帧数。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-t</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：体积移动的体素阈值（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">14</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-cw</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：提取切片时删除低于此阈值的体素（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">8</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-lt</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：禁止在最后一个时间段（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">30</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">秒）内关闭循环。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-s</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：融合体积的大小（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">6</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> m）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-dg</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：变形姿势采样率（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.8</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> m）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-il</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：RANSAC 的内部阈值（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.35</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-it</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：位姿图优化的剩余阈值（默认</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">10</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-sm</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：静态模式（禁用音量切换）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-f</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：翻转 RGB/BGR。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-od</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：执行在线变形（闭环所需）。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-m</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：启用网格生成。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-no</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：禁用提取切片的重叠。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-nos</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：保存地图时删除重叠。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-r</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：仅使用 RGB 跟踪。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-ri</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：使用 ICP+RGB 组合跟踪。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-d</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：启用动态立方体定位。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-dc</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：禁用按角度进行颜色加权。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-fl</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：子采样姿态图以加快闭环速度。</font></font></li>
+<li><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">-fod</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：启用快速里程计。</font></font></li>
+</ul>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本质上默认情况下</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">./Kintinously</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">将尝试实时运行连接的华硕传感器。</font><font style="vertical-align: inherit;">您可以使用 -l 参数提供 .klg 日志文件。</font></font><a href="https://github.com/mp3guy/Logger1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以使用Logger1</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><a href="https://github.com/mp3guy/Logger2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Logger2</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">捕获 .klg 格式的日志</font><font style="vertical-align: inherit;">。</font></font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4. 数据集</font></font></h1><a id="user-content-4-datasets" class="anchor" aria-label="永久链接：4.数据集" href="#4-datasets"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们提供了一个示例数据集，您可以使用 Kintinously 轻松运行该数据集，并可</font></font><a href="http://www.cs.nuim.ie/research/vision/data/loop.klg" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载。</font><font style="vertical-align: inherit;">按如下方式启动它：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>./Kintinuous -s 7 -v ../vocab.yml.gz -l loop.klg -ri -fl -od</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="./Kintinuous -s 7 -v ../vocab.yml.gz -l loop.klg -ri -fl -od" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5. 许可和版权</font></font></h1><a id="user-content-5-license-and-copyright" class="anchor" aria-label="永久链接：5. 许可和版权" href="#5-license-and-copyright"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">仅允许非商业目的使用此存储库中的代码以及构成 Kintinously 软件的文件中的所有代码。</font><font style="vertical-align: inherit;">除非明确说明，否则适用于此存储库中的代码的完整条款和条件在 LICENSE.txt 文件和</font></font><a href="http://www.cs.nuim.ie/research/vision/data/kintinuous/code.php" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://www.cs.nuim.ie/research/vision/data/kintinously/code.php</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">中有详细说明。</font><font style="vertical-align: inherit;">通过访问此存储库，您同意遵守这些条款。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您希望将此代码用于商业目的，请发送电子邮件至</font></font><a href="mailto:commercialisation@nuim.ie"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Commercialising@nuim.ie</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">版权所有 (C) 2015 爱尔兰国立梅努斯大学和麻省理工学院。</font></font></p>
+<div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">6. 常见问题解答</font></font></h1><a id="user-content-6-faq" class="anchor" aria-label="永久链接： 6. 常见问题解答" href="#6-faq"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">硬件要求是什么？</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">快速的 nVidia GPU </font></font><a href="https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units#GeForce_500_Series" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(1TFLOPS+)</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和快速的 CPU（类似于 i5）。</font><font style="vertical-align: inherit;">如果您想使用非 nVidia GPU，那您就不走运了。</font></font></p>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">前端跑得很快，但是地图好像落后了</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这是因为你的 CPU 速度很慢。</font><font style="vertical-align: inherit;">后端完全在 CPU 上运行，并且必须处理从前端提取的每个点。</font><font style="vertical-align: inherit;">这意味着如果您的地图非常大，或者您移动得非常快，后端可能无法跟上。</font><font style="vertical-align: inherit;">此外，在启用循环闭合时打开网格划分会占用大量 CPU 资源，但快速的现代处理器将实时处理此问题。</font></font></p>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我保存了地图，如何查看？</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载</font></font><a href="http://meshlab.sourceforge.net/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Meshlab</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，它可以读取 .ply 文件。</font><font style="vertical-align: inherit;">如果您只保存点云，则需要使用 PCL 的查看器来查看 .pcd 文件。</font></font></p>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">地图不断损坏 - 跟踪失败 - 闭环不正确/不起作用</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">首先，如果您正在实时运行并且不处理日志文件，请确保达到 30Hz，这很重要。</font><font style="vertical-align: inherit;">其次，您无法极快地移动传感器，因为这违反了投影数据关联背后的假设。</font><font style="vertical-align: inherit;">除此之外，您可能正在使用 primesense，这意味着您会遭受运动模糊、相机不同步和滚动快门的困扰。</font><font style="vertical-align: inherit;">所有这些都会因快速运动而加剧并阻碍跟踪性能。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果你没有得到闭环并且期望得到一些闭环，或者得到错误的闭环，那么你就会受到 DBoW 的摆布。</font><font style="vertical-align: inherit;">您可以调整一些与之相关的参数，但总的来说，您受到基于外观的地点识别的典型限制的限制。</font><font style="vertical-align: inherit;">随意拼接在不同的地方识别方法。</font><font style="vertical-align: inherit;">顺便说一句，</font></font><a href="https://github.com/mp3guy/ElasticFusion"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ElasticFusion</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更适合非常循环的全面扫描，这可能更适合您的应用程序。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您在循环闭合期间注意到一些奇怪的切片效果，请减小体积大小或通过减小-dg</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">参数来提高变形中姿势采样的速率</font><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有ROS桥/节点吗？</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">不会。事实上，如果您安装了 ROS，您可能会遇到一些真正可怕的构建问题。</font></font></p>
+<p dir="auto"><em><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这似乎不像视频/论文中那样有效</font></font></strong></em></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为了开源该系统，进行了大量的重构，包括重写许多功能以避免某些许可证。</font><font style="vertical-align: inherit;">尽管在此过程中非常小心，但有可能引入了性能回归但尚未被发现。</font></font></p>
+</article></div>
